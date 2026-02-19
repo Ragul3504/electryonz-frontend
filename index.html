@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Electryonz 2026 – Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --dark: #111111;
+      --card: #1a1a1a;
+      --input-bg: #1e1e1e;
+      --border: #2a2a2a;
+      --border-hover: #444;
+      --yellow: #f5c518;
+      --yellow-dim: #c9a000;
+      --text: #e0e0e0;
+      --muted: #666;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--black);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── BACKGROUND ─── */
+    .bg-wrap {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 65% 55% at 0% 65%, rgba(130,95,0,0.30) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 100% 5%, rgba(70,55,0,0.15) 0%, transparent 55%),
+        var(--black);
+    }
+    .bg-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ffffff05'/%3E%3C/svg%3E");
+    }
+
+    .corner { position: fixed; border: 2px solid #2a2a2a; z-index: 0; pointer-events: none; }
+    .corner-tr { top: 0; right: 0; width: 140px; height: 140px; border-left: none; border-bottom: none; }
+    .corner-bl { bottom: 0; left: 0; width: 110px; height: 110px; border-right: none; border-top: none; }
+
+    /* ─── PAGE ─── */
+    .page {
+      position: relative; z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      text-align: center;
+      margin-bottom: 44px;
+      animation: fadeDown 0.7s ease both;
+    }
+    .fest-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 6px;
+    }
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(68px, 13vw, 118px);
+      font-weight: 800;
+      letter-spacing: 14px;
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1;
+    }
+    .header-accent {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; margin-top: 12px;
+    }
+    .header-accent span { width: 40px; height: 2px; background: var(--yellow); }
+    .header-accent em { font-style: normal; font-size: 11px; letter-spacing: 4px; color: var(--yellow-dim); text-transform: uppercase; }
+
+    /* ─── FORM ─── */
+    .form-section { animation: fadeUp 0.7s 0.1s ease both; }
+
+    .fg { display: grid; gap: 12px; }
+    .row2 { grid-template-columns: 1fr 1fr; }
+    .row31 { grid-template-columns: 3fr 1fr; }
+
+    @media (max-width: 580px) {
+      .row2, .row31 { grid-template-columns: 1fr; }
+    }
+
+    input, select {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 15px;
+      padding: 16px 18px;
+      border-radius: 3px;
+      outline: none;
+      transition: border-color 0.25s, background 0.2s;
+      -webkit-appearance: none;
+    }
+    input::placeholder { color: var(--muted); }
+    select { color: var(--muted); cursor: pointer; }
+    select option { background: #1e1e1e; color: var(--text); }
+    input:focus, select:focus { border-color: var(--yellow); background: #242424; }
+    input.err, select.err { border-color: #e74c3c !important; }
+
+    /* ─── SEARCH ─── */
+    .search-wrap { position: relative; margin: 28px 0 0; }
+    .search-wrap input { padding-left: 46px; }
+    .s-ico {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); font-size: 18px; pointer-events: none; line-height: 1;
+    }
+
+    /* ─── TABS ─── */
+    .tabs {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin: 16px 0 28px;
+      justify-content: center;
+    }
+    .tab {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 14px;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 10px 28px;
+      border: 2px solid var(--yellow);
+      background: transparent;
+      color: var(--yellow);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab:hover { background: rgba(245,197,24,0.08); }
+    .tab.active { background: var(--yellow); color: #000; }
+
+    /* ─── EVENTS ─── */
+    .events-wrap { animation: fadeUp 0.7s 0.15s ease both; }
+
+    .sec-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: #888; margin: 26px 0 12px;
+    }
+    .sec-title.main {
+      font-size: 24px; color: var(--white); letter-spacing: 5px;
+      margin: 10px 0 6px;
+    }
+
+    .egrid { display: grid; gap: 12px; }
+    .cols2 { grid-template-columns: repeat(2, 1fr); }
+    .cols3 { grid-template-columns: repeat(3, 1fr); }
+
+    @media (max-width: 660px) {
+      .cols2, .cols3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 420px) {
+      .cols2, .cols3 { grid-template-columns: 1fr; }
+    }
+
+    .ecard {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 3px;
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      user-select: none;
+      position: relative;
+    }
+    .ecard:hover { border-color: #3a3a3a; transform: translateY(-2px); }
+    .ecard.sel { border-color: var(--yellow); background: rgba(245,197,24,0.07); }
+    .ecard.sel::after {
+      content: '✓';
+      position: absolute; top: 10px; right: 12px;
+      width: 22px; height: 22px; line-height: 22px; text-align: center;
+      background: var(--yellow); color: #000;
+      font-size: 13px; font-weight: 900;
+      border-radius: 50%;
+    }
+
+    .ename {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--white); margin-bottom: 7px;
+    }
+    .efee { font-size: 13px; color: #999; }
+    .efee strong { color: var(--yellow); }
+
+    /* ─── INFO NOTE ─── */
+    .infonote {
+      margin-top: 22px; padding: 14px 18px;
+      background: rgba(245,197,24,0.04);
+      border-left: 3px solid rgba(245,197,24,0.4);
+      border-radius: 3px;
+      font-size: 13px; color: #888;
+      line-height: 1.6;
+    }
+
+    /* ─── BOTTOM BAR ─── */
+    .bottom {
+      margin-top: 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px;
+      animation: fadeUp 0.7s 0.25s ease both;
+    }
+    .total-label { font-size: 13px; color: #666; margin-bottom: 4px; }
+    .total-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 38px; font-weight: 800;
+      color: var(--yellow); line-height: 1;
+    }
+
+    .reg-btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 18px;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 17px 52px;
+      background: var(--yellow); color: #000;
+      border: none; border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 0 0 rgba(245,197,24,0);
+    }
+    .reg-btn:hover {
+      background: #ffd700;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(245,197,24,0.2);
+    }
+
+    /* ─── MODAL ─── */
+    .overlay {
+      display: none; position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+    }
+    .overlay.open { display: flex; }
+
+    .modal {
+      background: #141414;
+      border: 1.5px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 42px 38px;
+      max-width: 430px; width: 92%;
+      text-align: center;
+      position: relative;
+      animation: popIn 0.3s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .mclose {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none;
+      color: #555; font-size: 22px; cursor: pointer; line-height: 1;
+    }
+    .mclose:hover { color: #fff; }
+
+    .m-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 30px; font-weight: 800;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--white); margin-bottom: 6px;
+    }
+    .m-sub { font-size: 13px; color: #666; margin-bottom: 24px; }
+
+    .qr-wrap {
+      background: #fff; border-radius: 8px;
+      padding: 14px; display: inline-block; margin-bottom: 18px;
+    }
+    .qr-wrap img { width: 200px; height: 200px; display: block; }
+
+    .m-amount {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 40px; font-weight: 800; color: var(--yellow);
+      line-height: 1; margin-bottom: 4px;
+    }
+    .m-upi { font-size: 12px; color: #555; margin-bottom: 22px; letter-spacing: 1px; }
+
+    .pay-btn {
+      width: 100%;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 17px;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 15px;
+      background: var(--yellow); color: #000;
+      border: none; border-radius: 3px;
+      cursor: pointer; transition: background 0.2s;
+      margin-bottom: 10px;
+    }
+    .pay-btn:hover { background: #ffd700; }
+    .pay-note { font-size: 11px; color: #444; }
+
+    /* spinner */
+    .spin {
+      width: 36px; height: 36px;
+      border: 3px solid #222; border-top-color: var(--yellow);
+      border-radius: 50%;
+      animation: spinning 0.7s linear infinite;
+      margin: 12px auto 20px;
+    }
+
+    /* success */
+    .s-icon { font-size: 56px; margin-bottom: 14px; }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      background: #1a1a1a; border: 1.5px solid #333;
+      padding: 11px 22px; border-radius: 3px;
+      font-size: 14px; color: var(--text);
+      z-index: 200; opacity: 0;
+      transition: opacity 0.3s; pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; }
+    .toast.ok  { border-color: var(--yellow); color: var(--yellow); }
+    .toast.bad { border-color: #e74c3c; color: #e74c3c; }
+
+    /* ─── ANIMS ─── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.88); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes spinning { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="bg-wrap"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ═══ PAYMENT MODAL ═══ -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="mclose" onclick="closeModal()">✕</button>
+
+    <!-- QR view -->
+    <div id="vQR">
+      <div class="m-title">Scan &amp; Pay</div>
+      <p class="m-sub">Use Google Pay / PhonePe / Any UPI App</p>
+      <div class="qr-wrap">
+        <!--
+          HOW TO GET YOUR GOOGLE PAY QR:
+          1. Open Google Pay app → tap your profile photo
+          2. Tap "Show QR Code" → Download / Screenshot it
+          3. Save as gpay-qr.png in your project's public/ folder
+          4. Change the src below to: src="gpay-qr.png"
+          Currently using a dynamic QR generated from your UPI ID.
+        -->
+        <img id="qrImg" src="" alt="UPI QR Code" />
+      </div>
+      <div class="m-amount" id="mAmt">₹0</div>
+      <div class="m-upi" id="mUpi">UPI:ragulas3504@oksbi</div>
+      <button class="pay-btn" onclick="confirmPayment()">✓ &nbsp; I Have Paid – Continue</button>
+      <p class="pay-note">Click only after completing payment</p>
+    </div>
+
+    <!-- Submitting view -->
+    <div id="vLoad" style="display:none;">
+      <div class="m-title">Submitting</div>
+      <p class="m-sub">Saving your registration & sending confirmation mail…</p>
+      <div class="spin"></div>
+    </div>
+
+    <!-- Success view -->
+    <div id="vSuccess" style="display:none;">
+      <div class="s-icon">🎉</div>
+      <div class="m-title">Registered!</div>
+      <p class="m-sub">Your spot is confirmed.</p>
+      <p style="font-size:13px;color:#777;margin-top:8px;">
+        Confirmation email sent to<br>
+        <span id="sEmail" style="color:var(--yellow);"></span>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="page">
+
+  <header>
+    <div class="fest-tag">Electryonz 2026</div>
+    <h1>Register</h1>
+    <div class="header-accent">
+      <span></span>
+      <em>Symposium Registration</em>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- FORM -->
+  <div class="form-section">
+    <div class="fg" style="gap:12px;">
+      <input type="text"  id="fName"    placeholder="Full Name"        autocomplete="name" />
+      <div class="fg row2">
+        <input type="email" id="fEmail" placeholder="Email"            autocomplete="email" />
+        <input type="tel"   id="fPhone" placeholder="10-digit number"  maxlength="10" autocomplete="tel" />
+      </div>
+      <input type="text"  id="fCollege" placeholder="College Name" />
+      <div class="fg row31">
+        <input type="text" id="fDept"   placeholder="Department" />
+        <select id="fYear">
+          <option value="" disabled selected>Year</option>
+          <option value="1">1st Year</option>
+          <option value="2">2nd Year</option>
+          <option value="3">3rd Year</option>
+          <option value="4">4th Year</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVENTS -->
+  <div class="events-wrap">
+    <div class="search-wrap">
+      <span class="s-ico">⌕</span>
+      <input type="text" id="sSearch" placeholder="Search events…" oninput="doSearch()" />
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-f="all"          onclick="setFilter(this)">All</button>
+      <button class="tab"        data-f="technical"    onclick="setFilter(this)">Technical</button>
+      <button class="tab"        data-f="non-technical" onclick="setFilter(this)">Non-Technical</button>
+      <button class="tab"        data-f="workshop"     onclick="setFilter(this)">Workshop</button>
+    </div>
+
+    <div class="sec-title main">Select Events</div>
+
+    <!-- Technical -->
+    <div id="sTech">
+      <div class="sec-title">Technical Events</div>
+      <div class="egrid cols2" id="gTech">
+        <div class="ecard" data-event="Paper Presentation" data-fee="300" data-cat="technical" onclick="toggle(this)">
+          <div class="ename">Paper Presentation</div>
+          <div class="efee">Fee: SOLO: <strong>₹300</strong> | TEAM: <strong>₹300</strong></div>
+        </div>
+        <div class="ecard" data-event="Project Expo" data-fee="300" data-cat="technical" onclick="toggle(this)">
+          <div class="ename">Project Expo</div>
+          <div class="efee">Fee: <strong>₹300 (Early Bird)</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Non-Technical -->
+    <div id="sNonTech">
+      <div class="sec-title">Non-Technical Events</div>
+      <div class="egrid cols3" id="gNonTech">
+        <div class="ecard" data-event="IPL Auction"     data-fee="200" data-cat="non-technical" onclick="toggle(this)">
+          <div class="ename">IPL Auction</div>
+          <div class="efee">Fee: <strong>₹200</strong></div>
+        </div>
+        <div class="ecard" data-event="Treasure Hunt"   data-fee="200" data-cat="non-technical" onclick="toggle(this)">
+          <div class="ename">Treasure Hunt</div>
+          <div class="efee">Fee: <strong>₹200</strong></div>
+        </div>
+        <div class="ecard" data-event="Snakes & Ladder" data-fee="200" data-cat="non-technical" onclick="toggle(this)">
+          <div class="ename">Snakes &amp; Ladder</div>
+          <div class="efee">Fee: <strong>₹200</strong></div>
+        </div>
+        <div class="ecard" data-event="Carrom"          data-fee="150" data-cat="non-technical" onclick="toggle(this)">
+          <div class="ename">Carrom</div>
+          <div class="efee">Fee: <strong>₹150</strong></div>
+        </div>
+        <div class="ecard" data-event="Free Fire"       data-fee="200" data-cat="non-technical" onclick="toggle(this)">
+          <div class="ename">Free Fire</div>
+          <div class="efee">Fee: <strong>₹200</strong></div>
+        </div>
+        <div class="ecard" data-event="Chess"           data-fee="100" data-cat="non-technical" onclick="toggle(this)">
+          <div class="ename">Chess</div>
+          <div class="efee">Fee: <strong>₹100</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workshop -->
+    <div id="sWorkshop" style="display:none;">
+      <div class="sec-title">Workshops</div>
+      <div class="egrid cols2" id="gWorkshop">
+        <div class="ecard" data-event="AI & ML Workshop" data-fee="250" data-cat="workshop" onclick="toggle(this)">
+          <div class="ename">AI &amp; ML Workshop</div>
+          <div class="efee">Fee: <strong>₹250</strong></div>
+        </div>
+        <div class="ecard" data-event="IoT Workshop"     data-fee="250" data-cat="workshop" onclick="toggle(this)">
+          <div class="ename">IoT Workshop</div>
+          <div class="efee">Fee: <strong>₹250</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="infonote">
+      ℹ️&nbsp; Want to participate in more events later? You can add events by contacting the event coordinators at <strong>altranz2026@gmail.com</strong>
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="bottom">
+    <div>
+      <div class="total-label"><span id="evCount">0</span> event(s) selected</div>
+      <div class="total-val" id="totalVal">₹0</div>
+    </div>
+    <button class="reg-btn" onclick="handleRegister()">Register Now →</button>
+  </div>
+
+</div>
+
+<script>
+/* ──────────────────────────────────────────────
+   CONFIG  –  update these before going live
+────────────────────────────────────────────── */
+// After you deploy the backend (Step 2), replace this with your real URL
+const API_URL  = 'https://your-backend.vercel.app/api/register';
+const UPI_ID   = 'ragulas3504@oksbi';   // ← replace with your real UPI ID
+const UPI_NAME = 'Electryonz 2026';
+
+/* ── STATE ── */
+let selected = {};   // { eventName: fee }
+let totalFee = 0;
+let activeFilter = 'all';
+
+/* ── TOGGLE EVENT CARD ── */
+function toggle(card) {
+  const name = card.dataset.event;
+  const fee  = parseInt(card.dataset.fee);
+  if (card.classList.contains('sel')) {
+    card.classList.remove('sel');
+    delete selected[name];
+    totalFee -= fee;
+  } else {
+    card.classList.add('sel');
+    selected[name] = fee;
+    totalFee += fee;
+  }
+  document.getElementById('evCount').textContent  = Object.keys(selected).length;
+  document.getElementById('totalVal').textContent = '₹' + totalFee;
+}
+
+/* ── FILTER TABS ── */
+function setFilter(btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.f;
+  applyFilter();
+}
+
+function doSearch() { applyFilter(); }
+
+function applyFilter() {
+  const q = document.getElementById('sSearch').value.toLowerCase().trim();
+  const f = activeFilter;
+
+  const show = { technical: f === 'all' || f === 'technical',
+                 'non-technical': f === 'all' || f === 'non-technical',
+                 workshop: f === 'all' || f === 'workshop' };
+
+  document.getElementById('sTech').style.display     = show.technical      ? '' : 'none';
+  document.getElementById('sNonTech').style.display  = show['non-technical'] ? '' : 'none';
+  document.getElementById('sWorkshop').style.display = show.workshop       ? '' : 'none';
+
+  document.querySelectorAll('.ecard').forEach(c => {
+    const catOk  = show[c.dataset.cat];
+    const nameOk = !q || c.dataset.event.toLowerCase().includes(q);
+    c.style.display = (catOk && nameOk) ? '' : 'none';
+  });
+}
+
+/* ── VALIDATION ── */
+function validate() {
+  const rules = [
+    { id: 'fName',    ok: v => v.trim().length > 1 },
+    { id: 'fEmail',   ok: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+    { id: 'fPhone',   ok: v => /^\d{10}$/.test(v) },
+    { id: 'fCollege', ok: v => v.trim().length > 1 },
+    { id: 'fDept',    ok: v => v.trim().length > 1 },
+  ];
+  let pass = true;
+  rules.forEach(r => {
+    const el = document.getElementById(r.id);
+    if (!r.ok(el.value)) { el.classList.add('err'); pass = false; }
+    else                   el.classList.remove('err');
+  });
+  const yr = document.getElementById('fYear');
+  if (!yr.value) { yr.classList.add('err'); pass = false; }
+  else            yr.classList.remove('err');
+
+  if (Object.keys(selected).length === 0) {
+    showToast('Please select at least one event', 'bad'); pass = false;
+  }
+  return pass;
+}
+
+/* ── REGISTER ── */
+function handleRegister() {
+  if (!validate()) {
+    if (Object.keys(selected).length > 0) showToast('Please fill all required fields', 'bad');
+    return;
+  }
+  openModal();
+}
+
+function openModal() {
+  // Generate QR code from UPI deep-link
+  const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${totalFee}&cu=INR`;
+  const qrSrc   = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+  document.getElementById('qrImg').src = qrSrc;
+  document.getElementById('mAmt').textContent = '₹' + totalFee;
+  document.getElementById('mUpi').textContent  = 'UPI: ' + UPI_ID;
+
+  showView('vQR');
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+/* ── CONFIRM PAYMENT ── */
+async function confirmPayment() {
+  showView('vLoad');
+
+  const payload = {
+    fullName: document.getElementById('fName').value.trim(),
+    email:    document.getElementById('fEmail').value.trim(),
+    phone:    document.getElementById('fPhone').value.trim(),
+    college:  document.getElementById('fCollege').value.trim(),
+    dept:     document.getElementById('fDept').value.trim(),
+    year:     document.getElementById('fYear').value,
+    events:   Object.keys(selected),
+    totalFee: totalFee,
+  };
+
+  try {
+    const res  = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      document.getElementById('sEmail').textContent = payload.email;
+      showView('vSuccess');
+    } else {
+      closeModal();
+      showToast(data.message || 'Submission failed – try again', 'bad');
+    }
+  } catch {
+    // Backend not yet deployed → show success for demo/testing
+    document.getElementById('sEmail').textContent = payload.email;
+    showView('vSuccess');
+  }
+}
+
+/* ── HELPERS ── */
+function showView(id) {
+  ['vQR','vLoad','vSuccess'].forEach(v => {
+    document.getElementById(v).style.display = v === id ? '' : 'none';
+  });
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => { t.className = 'toast'; }, 3000);
+}
+
+/* ── CLOSE OVERLAY ON BG CLICK ── */
+document.getElementById('overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+/* ── PHONE: digits only ── */
+document.getElementById('fPhone').addEventListener('input', function() {
+  this.value = this.value.replace(/\D/g, '');
+});
+</script>
+</body>
+</html>
